@@ -11,7 +11,4 @@ ARG APP_INSTANCE_NAME
 ARG SECRET_DO_SPACES_KEY
 ARG SECRET_DO_SPACES_SECRET
 
-RUN printenv | sort
-RUN /app/deploy
-
-CMD ["./deploy"]
+CMD ["python", "deploy"]
