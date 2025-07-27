@@ -8,10 +8,10 @@ import io
 import os
 
 
-# CLI arguments to be implemened
+# Application parameters
 name = os.getenv("APP_NAME")
 version = os.getenv("APP_VERSION")
-instance = "self-dev"
+instance = os.getenv("APP_INSTANCE")
 
 target = "dist"
 
