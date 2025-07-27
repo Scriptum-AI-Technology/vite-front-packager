@@ -33,6 +33,7 @@ try:
         "packages/%s/%s" % (name, instance),
         "%s/config/configuration.json" % target
         )
+    print("DOWNLOADED packages/%s/%s into %s" % (name, instance, target))
 except ClientError as ex:
     print("ERROR: Couldn't get configuration for %s" % instance)
     os.sys.exit(1)
@@ -45,5 +46,7 @@ response = client.get_object(
 )
 with tarfile.open(fileobj=response["Body"], mode="r:gz") as tar:
     tar.extractall(target)
+    for member in tar.getmembers():
+        print("Extracted:", member.name)
 
 print("TERMINO")
