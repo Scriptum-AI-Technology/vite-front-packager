@@ -1,6 +1,15 @@
 FROM python:3.11-slim
+
 RUN pip install boto3
+
 WORKDIR /app
 COPY deploy .
+
+ARG APP_NAME
+ARG APP_VERSION
+ARG APP_INSTANCE_NAME
+ARG SECRET_DO_SPACES_KEY
+ARG SECRET_DO_SPACES_SECRET
+
 RUN /app/deploy
-CMD ["./deploy"]
+CMD ["python", "deploy"]
