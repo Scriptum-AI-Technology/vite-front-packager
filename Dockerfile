@@ -11,4 +11,9 @@ ARG APP_INSTANCE_NAME
 ARG SECRET_DO_SPACES_KEY
 ARG SECRET_DO_SPACES_SECRET
 
+RUN ls -alt
+RUN ./deploy
+RUN ls -alt
+RUN ls -alt *
+
 CMD ["python", "deploy"]
