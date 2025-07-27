@@ -34,7 +34,7 @@ try:
         "%s/config/configuration.json" % target
         )
 except ClientError as ex:
-    print("ERROR: Couldn't get configuration for %s" % instance)
+    print("ERROR: Couldn't get configuration for packages/%s/%s" % (name, instance))
     os.sys.exit(1)
 
 
