@@ -20,8 +20,8 @@ target = "dist"
 client = session.Session().client("s3",
     region_name="fra1",
     endpoint_url="https://fra1.digitaloceanspaces.com",
-    aws_access_key_id=os.getenv("SECRET_DO_SPACES_KEY"),
-    aws_secret_access_key=os.getenv("SECRET_DO_SPACES_SECRET")
+    aws_access_key_id=os.getenv("DO_SPACES_KEY"),
+    aws_secret_access_key=os.getenv("DO_SPACES_SECRET")
     )
 
 
@@ -39,11 +39,15 @@ except ClientError as ex:
 
 
 # Unpack static site
-response = client.get_object(
-    Bucket="scriptum-assets",
-    Key="packages/%s/%s" % (name, version),
-)
+try:
+    response = client.get_object(
+        Bucket="scriptum-assets",
+        Key="packages/%s/%s" % (name, version),
+    )
+except ClientError as ex:
+    print("ERROR: Couldn't get version '%s' for '%s'" % (version, name))
+    os.sys.exit(1)
 with tarfile.open(fileobj=response["Body"], mode="r:gz") as tar:
     tar.extractall(target)
 
-print("TERMINO")
+print("Succesful deploy")
