@@ -35,7 +35,7 @@ try:
         )
     print("DOWNLOADED packages/%s/%s into %s" % (name, instance, target))
 except ClientError as ex:
-    print("ERROR: Couldn't get configuration for %s" % instance)
+    print("ERROR: Couldn't get configuration for packages/%s/%s" % (name, instance))
     raise ex
     os.sys.exit(1)
 
