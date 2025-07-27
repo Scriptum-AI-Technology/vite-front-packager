@@ -12,6 +12,7 @@ ARG SECRET_DO_SPACES_KEY
 ARG SECRET_DO_SPACES_SECRET
 
 RUN ls -alt
+RUN printenv | sort
 RUN ./deploy
 RUN ls -alt
 RUN ls -alt *
