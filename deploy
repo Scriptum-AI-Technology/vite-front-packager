@@ -45,6 +45,7 @@ try:
         Bucket="scriptum-assets",
         Key="packages/%s/%s" % (name, version),
     )
+    print("DOWNLOADED packages/%s/%s" % (name, version))
 except ClientError as ex:
     print("ERROR: Couldn't get version '%s' for '%s'" % (version ,name))
     os.sys.exit(1)
@@ -52,5 +53,3 @@ with tarfile.open(fileobj=response["Body"], mode="r:gz") as tar:
     tar.extractall(target)
     for member in tar.getmembers():
         print("Extracted:", member.name)
-
-print("TERMINO")
