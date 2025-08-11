@@ -11,7 +11,7 @@ import os
 # Application parameters
 name = os.getenv("APP_NAME")
 version = os.getenv("APP_VERSION")
-instance = os.getenv("APP_INSTANCE")
+instance = os.getenv("APP_INSTANCE", None)
 
 target = "dist"
 
@@ -25,17 +25,18 @@ client = session.Session().client("s3",
     )
 
 
-# Get configuration file
-os.makedirs("%s/config" % target, exist_ok=True)
-try:
-    client.download_file(
-        "scriptum-assets",
-        "packages/%s/%s" % (name, instance),
-        "%s/config/configuration.json" % target
-        )
-except ClientError as ex:
-    print("ERROR: Couldn't get configuration for packages/%s/%s" % (name, instance))
-    os.sys.exit(1)
+# Get configuration file (if any)
+if instance:
+    os.makedirs("%s/config" % target, exist_ok=True)
+    try:
+        client.download_file(
+            "scriptum-assets",
+            "packages/%s/%s" % (name, instance),
+            "%s/config/configuration.json" % target
+            )
+    except ClientError as ex:
+        print("ERROR: Couldn't get configuration for packages/%s/%s" % (name, instance))
+        os.sys.exit(1)
 
 
 # Unpack static site
