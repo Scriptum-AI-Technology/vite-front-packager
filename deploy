@@ -26,6 +26,18 @@ client = session.Session().client("s3",
     )
 
 
+# Unpack static site
+try:
+    response = client.get_object(
+        Bucket="scriptum-assets",
+        Key="packages/%s/%s" % (name, version),
+    )
+except ClientError as ex:
+    print("ERROR: Couldn't get version '%s' for '%s'" % (version, name))
+    os.sys.exit(1)
+with tarfile.open(fileobj=response["Body"], mode="r:gz") as tar:
+    tar.extractall(target)
+
 # Get configuration file (if any)
 if instance:
     os.makedirs(os.path.join(target, os.path.dirname(configpath)), exist_ok=True)
@@ -39,17 +51,5 @@ if instance:
         print("ERROR: Couldn't get configuration for packages/%s/%s" % (name, instance))
         os.sys.exit(1)
 
-
-# Unpack static site
-try:
-    response = client.get_object(
-        Bucket="scriptum-assets",
-        Key="packages/%s/%s" % (name, version),
-    )
-except ClientError as ex:
-    print("ERROR: Couldn't get version '%s' for '%s'" % (version, name))
-    os.sys.exit(1)
-with tarfile.open(fileobj=response["Body"], mode="r:gz") as tar:
-    tar.extractall(target)
 
 print("Succesful deploy")
