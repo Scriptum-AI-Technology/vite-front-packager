@@ -12,6 +12,7 @@ import os
 name = os.getenv("APP_NAME")
 version = os.getenv("APP_VERSION")
 instance = os.getenv("APP_INSTANCE", None)
+configpath = os.getenv("APP_CONFIGPATH", "config/configuration.json")
 
 target = "dist"
 
@@ -25,20 +26,6 @@ client = session.Session().client("s3",
     )
 
 
-# Get configuration file (if any)
-if instance:
-    os.makedirs("%s/config" % target, exist_ok=True)
-    try:
-        client.download_file(
-            "scriptum-assets",
-            "packages/%s/%s" % (name, instance),
-            "%s/config/configuration.json" % target
-            )
-    except ClientError as ex:
-        print("ERROR: Couldn't get configuration for packages/%s/%s" % (name, instance))
-        os.sys.exit(1)
-
-
 # Unpack static site
 try:
     response = client.get_object(
@@ -50,5 +37,20 @@ except ClientError as ex:
     os.sys.exit(1)
 with tarfile.open(fileobj=response["Body"], mode="r:gz") as tar:
     tar.extractall(target)
+
+# Get configuration file (if any)
+if instance:
+    if '/' in configpath:
+        os.makedirs(os.path.join(target, os.path.dirname(configpath)), exist_ok=True)
+    try:
+        client.download_file(
+            "scriptum-assets",
+            "packages/%s/%s" % (name, instance),
+            "%s/%s" % (target, configpath)
+            )
+    except ClientError as ex:
+        print("ERROR: Couldn't get configuration for packages/%s/%s" % (name, instance))
+        os.sys.exit(1)
+
 
 print("Succesful deploy")
