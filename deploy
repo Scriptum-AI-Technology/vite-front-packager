@@ -16,6 +16,8 @@ configpath = os.getenv("APP_CONFIGPATH", "config/configuration.json")
 
 target = "dist"
 
+print("INFO %s %s %s %s", % (name, version, instance, configpath))
+
 
 # Create S3 client
 client = session.Session().client("s3",
@@ -40,6 +42,7 @@ with tarfile.open(fileobj=response["Body"], mode="r:gz") as tar:
 
 # Get configuration file (if any)
 if instance:
+    print("Downloading packages/%s/%s into %s/%s" % (name, instance, target, configpath))
     if '/' in configpath:
         os.makedirs(os.path.join(target, os.path.dirname(configpath)), exist_ok=True)
     try:
