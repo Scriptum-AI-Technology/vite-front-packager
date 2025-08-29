@@ -16,7 +16,7 @@ configpath = os.getenv("APP_CONFIGPATH", "config/configuration.json")
 
 target = "dist"
 
-print("INFO %s %s %s %s", % (name, version, instance, configpath))
+print("INFO %s %s %s %s" % (name, version, instance, configpath))
 
 
 # Create S3 client
