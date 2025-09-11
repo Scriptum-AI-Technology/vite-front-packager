@@ -12,7 +12,7 @@ import os
 name = os.getenv("APP_NAME")
 version = os.getenv("APP_VERSION")
 instance = os.getenv("APP_INSTANCE", None)
-configpath = os.getenv("APP_CONFIGPATH", "config/configuration.json")
+configpath = os.getenv("APP_CONFIGPATH", "config.js")
 
 target = "dist"
 
